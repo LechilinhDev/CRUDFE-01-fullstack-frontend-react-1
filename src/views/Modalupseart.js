@@ -61,9 +61,10 @@ class Modalupsert extends React.Component {
 
         let { tutorial, action } = this.state;
         if (action === 'C') {
-            await axios.post('http://localhost:8118/api/tutorials/', { ...tutorial });
+
+            await axios.post(process.env.REACT_APP_BASE_URL, { ...tutorial });
         } else {
-            await axios.put(`http://localhost:8118/api/tutorials/${tutorial.id}`, { ...tutorial });
+            await axios.put(process.env.REACT_APP_BASE_URL + `${tutorial.id}`, { ...tutorial });
             // console.log('check id', tutorial.id); check id pass data child from parent
         }
 

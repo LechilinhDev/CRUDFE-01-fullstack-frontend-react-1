@@ -20,7 +20,7 @@ class TableTutorial extends React.Component {
         const { getListTutorials } = this.props;
 
         if (window.confirm(`Are you sure to delete this tutorial, id = ${id}`)) {
-            await axios.delete(`http://localhost:8118/api/tutorials/${id}`);
+            await axios.delete(process.env.REACT_APP_BASE_URL + `${id}`);
 
         }
         getListTutorials();
