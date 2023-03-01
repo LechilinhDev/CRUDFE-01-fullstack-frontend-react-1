@@ -18,7 +18,7 @@ class Modalupsert extends React.Component {
 
     }
     getListTutorials = async () => {
-        const data = await axios.get('http://localhost:8118/api/tutorials/');
+        const data = await axios.get(process.env.REACT_APP_BASE_URL);
         this.setState({
             listTutorials: data && data.data ? data.data : []
         })
@@ -64,7 +64,7 @@ class Modalupsert extends React.Component {
 
             await axios.post(process.env.REACT_APP_BASE_URL, { ...tutorial });
         } else {
-            await axios.put(process.env.REACT_APP_BASE_URL + `${tutorial.id}`, { ...tutorial });
+            await axios.put(process.env.REACT_APP_BASE_URL + `/${tutorial.id}`, { ...tutorial });
             // console.log('check id', tutorial.id); check id pass data child from parent
         }
 
