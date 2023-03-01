@@ -25,10 +25,14 @@ class TableTutorial extends React.Component {
         }
         getListTutorials();
     }
+    // handleUpdate = (item) => {
+    //     console.log('Update Data', item)
+    // }
 
     render() {
         // let { data } = this.state
-        let { listTutorials } = this.props;
+        let { listTutorials, handleEdit } = this.props;
+
 
         return (
 
@@ -47,6 +51,7 @@ class TableTutorial extends React.Component {
 
                     {listTutorials.map((item, index) => {
                         return (
+
                             <tr key={item.id} >
                                 <td>{item.id}</td>
                                 <td>{item.title}</td>
@@ -55,8 +60,16 @@ class TableTutorial extends React.Component {
                                 <td>
                                     <button
                                         className='btn btn-warning mx-3 d-inline-block'
+                                        onClick={() => {
+                                            this.props.handleShow();
+                                            this.props.setAction();
+                                            // this.handleUpdate(item);
+                                            handleEdit(item);
+                                        }}
 
-                                    >Edit</button>
+                                    >
+                                        Edit
+                                    </button>
                                     <button className='btn btn-danger' onClick={() => this.handleDelete(item.id)} >Delete</button>
                                 </td>
                             </tr>

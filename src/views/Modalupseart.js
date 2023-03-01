@@ -13,7 +13,8 @@ class Modalupsert extends React.Component {
             description: "",
             published: ""
         },
-        listTutorials: []
+        listTutorials: [],
+        action: 'C'
 
     }
     getListTutorials = async () => {
@@ -35,6 +36,11 @@ class Modalupsert extends React.Component {
             show: this.state.show ? false : true
         })
     }
+    setAction = () => {
+        this.setState({
+            action: 'U'
+        })
+    }
     handleInputChange = (event) => {
 
         this.setState({
@@ -53,15 +59,16 @@ class Modalupsert extends React.Component {
 
     handleSubmit = async () => {
 
-        let { tutorial } = this.state;
-        await axios.post('http://localhost:8118/api/tutorials/', { ...tutorial });
+        let { tutorial, action } = this.state;
+        if (action === 'C') {
+            await axios.post('http://localhost:8118/api/tutorials/', { ...tutorial });
+        } else {
+            await axios.put(`http://localhost:8118/api/tutorials/${tutorial.id}`, { ...tutorial });
+            // console.log('check id', tutorial.id); check id pass data child from parent
+        }
 
-        // this.setState({
-        //     id: "",
-        //     title: "",
-        //     description: "",
-        //     published: ""
-        // });
+
+
         // this.setState({
         //     listTutorials: [...listTutorials, tutorial],
         //     tutorial: {
@@ -71,21 +78,43 @@ class Modalupsert extends React.Component {
         //         published: ""
         //     }
         // })
+        this.setState({
+            tutorial:
+            {
+                id: "",
+                title: "",
+                description: "",
+                published: ""
+            }
+        })
         this.getListTutorials();
+
         this.handleClose();
+
 
     }
 
+    handleEdit = (item) => {
+        this.setState({
+            tutorial: item
+        })
+    }
+
     render() {
-        let { show, tutorial, listTutorials } = this.state;
+        let { show, tutorial, listTutorials, action } = this.state;
         return (
             <>
-                <Button className="mb-3 mt-3" variant="primary" onClick={() => this.handleShow()}>
+                <Button className="mb-3 mt-3" variant="primary" onClick={() => {
+                    this.handleShow();
+                    this.setState({
+                        action: 'C'
+                    })
+                }}>
                     Create New User
                 </Button>
                 <Modal show={show} onHide={() => this.handleClose()}>
                     <Modal.Header>
-                        Create New User
+                        {action === 'C' ? 'Create a new user' : 'Update the user'}
                     </Modal.Header>
                     <Modal.Body>
                         <div>
@@ -131,7 +160,7 @@ class Modalupsert extends React.Component {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-                <TableTutorial listTutorials={listTutorials} getListTutorials={this.getListTutorials} />
+                <TableTutorial listTutorials={listTutorials} getListTutorials={this.getListTutorials} handleShow={this.handleShow} setAction={this.setAction} handleEdit={this.handleEdit} />
             </>
         )
     }
